@@ -6,7 +6,7 @@ const api = axios.create({
     baseURL: API_URL
 });
 
-export const getRequest = async (url) => {
+const getRequest = async (url) => {
     try {
         const token = localStorage.getItem('token');
 
@@ -22,7 +22,7 @@ export const getRequest = async (url) => {
     }
 };
 
-export const postRequest = async (url, data) => {
+const postRequest = async (url, data) => {
     try {
         const token = localStorage.getItem('token');
 
@@ -46,4 +46,9 @@ const handleError = (error) => {
     } else {
         console.error(error);
     }
+};
+
+export default {
+    getRequest,
+    postRequest
 };
