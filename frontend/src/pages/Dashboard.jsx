@@ -2,7 +2,8 @@ import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import { ChefHat, UtensilsCrossed, Calendar, ShoppingCart, TrendingUp, Clock } from 'lucide-react';
-import { dummyStats, getRecentRecipes, getUpcomingMeals } from '../data/dummyData';
+import api from '../services/api';
+
 
 const Dashboard = () => {
     const [stats, setStats] = useState({
@@ -12,17 +13,47 @@ const Dashboard = () => {
     });
     const [recentRecipes, setRecentRecipes] = useState([]);
     const [upcomingMeals, setUpcomingMeals] = useState([]);
+    const [loading, setLoading] = useState(true);
 
-    useEffect(() => {
-        // Load dummy data
-        setStats({
-            totalRecipes: dummyStats.recipes.total_recipes,
-            pantryItems: dummyStats.pantry.total_items,
-            mealsThisWeek: dummyStats.mealPlans.this_week_count
-        });
-        setRecentRecipes(getRecentRecipes(5));
-        setUpcomingMeals(getUpcomingMeals(5));
-    }, []);
+    useEffect(()=>{
+        fetchDashboardData();
+    },[]);
+
+    const fetchDashboardData = async ()=>{
+        try{
+            const recipesRes = await api.getRequest("/recipes/stats");
+            const pantryRes = await api.getRequest("/pantry/stats");
+            const mealPlanRes = await api.getRequest("/meal-plans/stats");
+            const recentRes = await api.getRequest("/recipes/recent?limit=5");
+            const upcomingRes = await api.getRequest("/meal-plans/upcoming?limit=5");
+
+            setStats({
+                totalRecipes: recipesRes.data.total_recipes || 0,
+                pantryItems: pantryRes.data.total_items || 0,
+                mealsThisWeek: mealPlanRes.data.this_week_count || 0,
+            });
+
+            setRecentRecipes(recentRes.data.recipes || []);
+            setUpcomingMeals(upcomingRes.data.meals || [])
+        }
+        catch(err){
+            console.log("Error while fetching dashboard data", err);
+        }
+        finally{
+            setLoading(false);
+        }
+    }
+
+    if(loading){
+        return(
+            <div className='min-h-screen bg-gray-50'>
+                <Navbar />
+                <div className='flex items-center justify-center h-96'>
+                    <div className='w-8 h-8 border-4 border-emerald-500 border-t-transparent rounded-full animate-spin'></div>
+                </div>
+            </div>
+        )
+    }
 
     return (
         <div className="min-h-screen bg-gray-50">
