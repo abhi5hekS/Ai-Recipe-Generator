@@ -31,8 +31,7 @@ const generateRecipeAI = async ({
             Servings: ${servings}
             Cooking time: ${timeGuide[cookingTime] || "any"}
 
-            Return ONLY valid JSON (no markdown):
-
+            Please provide a complete recipe in the following json format (return only valid JSON, no markdown)
             {
               "name": "Recipe name",
               "description": "Brief description of the dish",
@@ -51,10 +50,10 @@ const generateRecipeAI = async ({
               "dietaryTags": ["vegetarian", "gluten-free"],
               "nutrition": {
                 "calories": number,
-                "protein": number,
-                "carbs": number,
-                "fats": number,
-                "fiber": number
+                "protein": number (grams),
+                "carbs": number (grams),
+                "fats": number (grams),
+                "fiber": number (grams)
               },
               "cookingTips": ["Tip 1", "Tip 2"]
             }
@@ -63,13 +62,12 @@ const generateRecipeAI = async ({
         `;
 
     try {
-        const model = genAI.getGenerativeModel({
-        model: "gemini-1.5-flash"
+        const model = genAI.models.generateContent({
+        model: "gemini-1.5-flash",
+        contents: prompt,
     });
 
-    const result = await model.generateContent(prompt);
-    const response = await result.response;
-    const generatedText = response.text().trim();
+    const generatedText = response.text.trim();
 
     let jsonText = generatedText;
 
@@ -117,13 +115,22 @@ Each suggestion should be short (1-2 sentences).
 `;
 
   try {
-    const model = getModel();
-    const result = await model.generateContent(prompt);
-    const response = await result.response;
+    const response = await genAI.models.generateContent({
+      model: "gemini-1.5-flash",
+      contents: prompt
+    });
 
-    const suggestions = cleanAndParseJSON(response.text());
+    let generatedText = response.text.trim();
 
-    return Array.isArray(suggestions) ? suggestions : [];
+    if(generatedText.startsWith('```json')){
+      generatedText = generatedText.replace(/```json\n?/g, '').replace(/```\n?$/g, '');
+    }
+    else if(generatedText.startsWith('```')){
+      generatedText = generatedText.replace(/```\n?/g, '');
+    }
+
+    const suggestions = JSON.parse(generatedText);
+    return suggestions;
 
   } catch (error) {
     console.error("Pantry suggestion error:", error.message);
@@ -148,13 +155,12 @@ const generateCookingTips = async (recipe) => {
     `;
 
     try {
-        const model = genAI.getGenerativeModel({
-        model: "gemini-1.5-flash"
+        const model = genAI.models.generateContent({
+        model: "gemini-1.5-flash",
+        contents: prompt
     });
 
-    const result = await model.generateContent(prompt);
-    const response = await result.response;
-    let generatedText = response.text().trim();
+    let generatedText = response.text.trim();
 
     if (generatedText.startsWith("```json")) {
       generatedText = generatedText
