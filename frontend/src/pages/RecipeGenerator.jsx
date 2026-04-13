@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { ChefHat, Sparkles, Plus, X, Clock, Users } from 'lucide-react';
 import Navbar from '../components/Navbar';
 import toast from 'react-hot-toast';
-import { dummyPreferences, dummyGeneratedRecipe } from '../data/dummyData';
+import api from '../services/api';
 
 const CUISINES = ['Any', 'Italian', 'Mexican', 'Indian', 'Chinese', 'Japanese', 'Thai', 'French', 'Mediterranean', 'American'];
 const DIETARY_OPTIONS = ['Vegetarian', 'Vegan', 'Gluten-Free', 'Dairy-Free', 'Keto', 'Paleo'];
@@ -27,15 +27,30 @@ const RecipeGenerator = () => {
 
     // Load user preferences on component mount
     useEffect(() => {
-        // Load dummy preferences
-        if (dummyPreferences.dietary_restrictions && dummyPreferences.dietary_restrictions.length > 0) {
-            setDietaryRestrictions(dummyPreferences.dietary_restrictions);
+        try{
+            const fetchUserPreferences = async()=>{
+                const response = await api.getRequest('/users/profile');
+                const preferences = response.data.preferences;
+                
+                if(preferences){
+                    
+                    if(preferences.dietary_restrictions && preferences.dietary_restrictions.length>0){
+                        setDietaryRestrictions(preferences.dietary_restrictions);
+                    }
+                    
+                    if(preferences.preferred_cuisines && preferences.preferred_cuisines.length>0){
+                        setCuisineType(preferences.preferred_cuisines[0]);
+                    }
+                    if(preferences.default_servings){
+                        setServings(preferences.default_servings);
+                    }
+                    setPreferencesLoaded(true);
+                }
+            }
         }
-        if (dummyPreferences.preferred_cuisines && dummyPreferences.preferred_cuisines.length > 0) {
-            setCuisineType(dummyPreferences.preferred_cuisines[0]);
-        }
-        if (dummyPreferences.default_servings) {
-            setServings(dummyPreferences.default_servings);
+        catch(err){
+            console.error('Failed to load user preferences:', err);
+            setPreferencesLoaded(true);
         }
     }, []);
 
@@ -58,7 +73,7 @@ const RecipeGenerator = () => {
         }
     };
 
-    const handleGenerate = () => {
+    const handleGenerate = async () => {
         if (!usePantry && ingredients.length === 0) {
             toast.error('Please add at least one ingredient or use pantry items');
             return;
@@ -67,19 +82,53 @@ const RecipeGenerator = () => {
         setGenerating(true);
         setGeneratedRecipe(null);
 
-        // Simulate API delay
-        setTimeout(() => {
-            setGeneratedRecipe(dummyGeneratedRecipe);
+        try{
+            const response = await api.postRequest('/recipes/generate',{
+                ingredients,
+                usePantryIngredients: usePantry,
+                dietaryRestrictions,
+                cuisineType: cuisineType==='Any' ? 'any' : cuisineType,
+                servings,
+                cookingTime
+            });
+            setGeneratedRecipe(response.data.recipe);
             toast.success('Recipe generated successfully!');
+        }
+        catch(err){
+            toast.error(err.response?.data?.message || 'Failed to generate recipe');
+        }
+        finally{
             setGenerating(false);
-        }, 1500);
+        }
     };
 
-    const handleSaveRecipe = () => {
+    const handleSaveRecipe = async () => {
         if (!generatedRecipe) return;
 
-        // UI-only save (no API call)
-        toast.success('Recipe saved to your collection!');
+        setSaving(true);
+        try{
+            await api.postRequest('/recipes',{
+                name: generatedRecipe.name,
+                description: generatedRecipe.description,
+                cuisineType: generatedRecipe.cuisineType,
+                difficulty: generatedRecipe.difficulty,
+                prep_time: generatedRecipe.prepTime,
+                cook_time: generatedRecipe.cookTime,
+                servings: generatedRecipe.servings,
+                instructions: generatedRecipe.instructions,
+                dietary_tags: generatedRecipe.dietaryTags || [],
+                ingredients: generatedRecipe.ingredients,
+                nutrition: generatedRecipe.nutrition
+            });
+            
+            toast.success('Recipe saved to your collection!');
+        }
+        catch(err){
+            toast.error('Failed to save recipe');
+        }
+        finally{
+            setSaving(false);
+        }
     };
 
     return (
