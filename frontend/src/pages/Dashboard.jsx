@@ -136,8 +136,8 @@ const Dashboard = () => {
                             <div className="space-y-3">
                                 {recentRecipes.map((recipe) => (
                                     <Link
-                                        key={recipe.id}
-                                        to={`/recipes/${recipe.id}`}
+                                        key={recipe._id}
+                                        to={`/recipes/${recipe._id}`}
                                         className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-50 transition-colors"
                                     >
                                         <div className="w-12 h-12 bg-emerald-100 rounded-lg flex items-center justify-center">

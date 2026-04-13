@@ -38,6 +38,22 @@ const postRequest = async (url, data) => {
     }
 };
 
+const deleteRequest = async (url) => {
+    try {
+        const token = localStorage.getItem('token');
+
+        const response = await api.delete(url, {
+            headers: {
+                Authorization: token ? `Bearer ${token}` : "",
+            },
+        });
+
+        return response.data;
+    } catch (error) {
+        handleError(error);
+    }
+};
+
 const handleError = (error) => {
     if (error.response?.status === 401) {
         localStorage.removeItem('token');
@@ -50,5 +66,6 @@ const handleError = (error) => {
 
 export default {
     getRequest,
-    postRequest
+    postRequest,
+    deleteRequest
 };

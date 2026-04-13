@@ -35,7 +35,7 @@ const ShoppingList = () => {
     const handleToggleChecked = (id) => {
         // UI-only toggle
         const updatedItems = items.map(item =>
-            item.id === id ? { ...item, is_checked: !item.is_checked } : item
+            item._id === id ? { ...item, is_checked: !item.is_checked } : item
         );
         setItems(updatedItems);
         organizeByCategory(updatedItems);
@@ -43,7 +43,7 @@ const ShoppingList = () => {
 
     const handleDeleteItem = (id) => {
         // UI-only delete
-        const updatedItems = items.filter(item => item.id !== id);
+        const updatedItems = items.filter(item => item._id !== id);
         setItems(updatedItems);
         organizeByCategory(updatedItems);
         toast.success('Item removed');
@@ -133,7 +133,7 @@ const ShoppingList = () => {
                                 <div className="divide-y divide-gray-100">
                                     {categoryItems.map(item => (
                                         <ShoppingListItem
-                                            key={item.id}
+                                            key={item._id}
                                             item={item}
                                             onToggle={handleToggleChecked}
                                             onDelete={handleDeleteItem}
@@ -179,7 +179,7 @@ const ShoppingListItem = ({ item, onToggle, onDelete }) => {
     return (
         <div className="flex items-center gap-4 px-6 py-4 hover:bg-gray-50 transition-colors group">
             <button
-                onClick={() => onToggle(item.id)}
+                onClick={() => onToggle(item._id)}
                 className="shrink-0"
             >
                 <div className={`w-6 h-6 rounded border-2 flex items-center justify-center transition-all ${item.is_checked
@@ -203,7 +203,7 @@ const ShoppingListItem = ({ item, onToggle, onDelete }) => {
             </div>
 
             <button
-                onClick={() => onDelete(item.id)}
+                onClick={() => onDelete(item._id)}
                 className="shrink-0 p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors opacity-0 group-hover:opacity-100"
             >
                 <X className="w-5 h-5" />

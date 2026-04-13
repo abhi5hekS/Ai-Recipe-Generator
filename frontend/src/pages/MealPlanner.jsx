@@ -45,7 +45,7 @@ const MealPlanner = () => {
         const updatedPlan = { ...mealPlan };
         Object.keys(updatedPlan).forEach(date => {
             Object.keys(updatedPlan[date]).forEach(type => {
-                if (updatedPlan[date][type].id === mealId) {
+                if (updatedPlan[date][type]._id === mealId) {
                     delete updatedPlan[date][type];
                 }
             });
@@ -144,7 +144,7 @@ const MealPlanner = () => {
                                                         {meal.recipe_name}
                                                     </p>
                                                     <button
-                                                        onClick={() => handleRemoveMeal(meal.id)}
+                                                        onClick={() => handleRemoveMeal(meal._id)}
                                                         className="absolute top-1 right-1 p-1 bg-white rounded hover:bg-red-50 text-gray-400 hover:text-red-600 opacity-0 group-hover:opacity-100 transition-opacity"
                                                     >
                                                         <X className="w-4 h-4" />
@@ -232,7 +232,7 @@ const AddMealModal = ({ date, mealType, recipes, onClose, onSuccess }) => {
         }
 
         // UI-only add
-        const recipe = recipes.find(r => r.id == selectedRecipe);
+        const recipe = recipes.find(r => r._id == selectedRecipe);
         const newMeal = {
             id: Date.now(),
             recipe_id: selectedRecipe,
@@ -278,8 +278,8 @@ const AddMealModal = ({ date, mealType, recipes, onClose, onSuccess }) => {
                         {filteredRecipes.length > 0 ? (
                             filteredRecipes.map(recipe => (
                                 <label
-                                    key={recipe.id}
-                                    className={`flex items-center gap-3 p-3 border rounded-lg cursor-pointer transition-colors ${selectedRecipe === recipe.id
+                                    key={recipe._id}
+                                    className={`flex items-center gap-3 p-3 border rounded-lg cursor-pointer transition-colors ${selectedRecipe === recipe._id
                                         ? 'border-emerald-500 bg-emerald-50'
                                         : 'border-gray-200 hover:bg-gray-50'
                                         }`}
@@ -287,8 +287,8 @@ const AddMealModal = ({ date, mealType, recipes, onClose, onSuccess }) => {
                                     <input
                                         type="radio"
                                         name="recipe"
-                                        value={recipe.id}
-                                        checked={selectedRecipe === recipe.id}
+                                        value={recipe._id}
+                                        checked={selectedRecipe === recipe._id}
                                         onChange={(e) => setSelectedRecipe(e.target.value)}
                                         className="w-4 h-4 text-emerald-500 border-gray-300 focus:ring-emerald-500"
                                     />
