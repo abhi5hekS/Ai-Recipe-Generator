@@ -30,8 +30,16 @@ const recipeSchema = new mongoose.Schema({
     type: Number,
     default: 4
   },
+  ingredients: {
+    type: [{
+      name: String,
+      quantity: Number,
+      unit: String
+    }],
+    default: []
+  },
   instructions: {
-    type: mongoose.Schema.Types.Mixed, // for JSONB
+    type: mongoose.Schema.Types.Mixed, 
     required: true
   },
   dietary_tags: {
@@ -43,6 +51,9 @@ const recipeSchema = new mongoose.Schema({
   },
   image_url: {
     type: String
+  },
+  nutrition: {
+    type: mongoose.Schema.Types.Mixed
   }
 }, {
   timestamps: {
