@@ -5,7 +5,7 @@ const recipeNutritionSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "Recipe",
     required: true,
-    unique: true // equivalent to UNIQUE(recipe_id)
+    unique: true
   },
   calories: {
     type: Number

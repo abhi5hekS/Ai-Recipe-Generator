@@ -21,7 +21,7 @@ const recipeIngredientSchema = new mongoose.Schema({
 }, {
   timestamps: {
     createdAt: "created_at",
-    updatedAt: false // since only created_at exists in SQL
+    updatedAt: false
   }
 });
 
