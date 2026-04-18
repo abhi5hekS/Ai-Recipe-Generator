@@ -1,6 +1,7 @@
 const ShoppingList = require('../models/shoppingList');
 const PantryItem = require('../models/pantryItems');
 const MealPlan = require('../models/mealPlan');
+const mongoose = require("mongoose");
 
 
 
@@ -88,21 +89,24 @@ const generateFromMealPlan = async (req, res, next) => {
 };
 
 
+
 const getShoppingList = async (req, res, next) => {
   try {
     const grouped = req.query.grouped === "true";
     const userId = req.user.id;
+
+    const userObjectId = new mongoose.Types.ObjectId(userId);
 
     let items;
 
     if (grouped) {
       items = await ShoppingList.aggregate([
         {
-          $match: { user_id: userId }
+          $match: { user_id: userObjectId }
         },
         {
           $group: {
-            _id: "$category",
+            _id: { $ifNull: ["$category", "Other"] },
             items: {
               $push: {
                 _id: "$_id",
@@ -128,7 +132,7 @@ const getShoppingList = async (req, res, next) => {
       ]);
     } else {
       items = await ShoppingList.find({
-        user_id: userId
+        user_id: userObjectId
       }).sort({ category: 1, ingredient_name: 1 });
     }
 

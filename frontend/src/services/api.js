@@ -38,6 +38,23 @@ const postRequest = async (url, data) => {
     }
 };
 
+
+const patchRequest = async (url, data) => {
+    try {
+        const token = localStorage.getItem('token');
+
+        const response = await api.patch(url, data, {
+            headers: {
+                Authorization: token ? `Bearer ${token}` : "",
+            },
+        });
+
+        return response.data;
+    } catch (error) {
+        handleError(error);
+    }
+};
+
 const deleteRequest = async (url) => {
     try {
         const token = localStorage.getItem('token');
@@ -67,5 +84,6 @@ const handleError = (error) => {
 export default {
     getRequest,
     postRequest,
+    patchRequest,
     deleteRequest
 };
