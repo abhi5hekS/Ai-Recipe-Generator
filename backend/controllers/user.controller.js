@@ -104,19 +104,18 @@ const changePassword = async (req, res, next) => {
 };
 
 
-const deleteAccount = async(req, res, next) =>{
-    try{
-        await User.delete(req.user.id);
-        
+const deleteAccount = async (req, res, next) => {
+    try {
+        await User.findByIdAndDelete(req.user.id);
+
         res.json({
             success: true,
             message: 'Account deleted successfully'
         });
-    }
-    catch(error){
+    } catch (error) {
         next(error);
     }
-}
+};
 
 module.exports = {
     getProfile, updateProfile, updatePreferences, changePassword, deleteAccount
