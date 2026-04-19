@@ -8,6 +8,7 @@ const Login = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [loading, setLoading] = useState(false);
+    const [error, setError] = useState('');
     const { login } = useAuth();
     const navigate = useNavigate();
 
@@ -18,10 +19,11 @@ const Login = () => {
         const result = await login(email, password);
 
         if (result.success) {
+            setError('');
             toast.success('Welcome back!');
             navigate('/dashboard');
         } else {
-            toast.error(result.message);
+            setError('Wrong email id or password');
         }
 
         setLoading(false);
@@ -53,7 +55,7 @@ const Login = () => {
                                     id="email"
                                     type="email"
                                     value={email}
-                                    onChange={(e) => setEmail(e.target.value)}
+                                    onChange={(e) => { setEmail(e.target.value); setError(''); }}
                                     className="w-full pl-11 pr-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none transition-all"
                                     placeholder="you@example.com"
                                     required
@@ -72,7 +74,7 @@ const Login = () => {
                                     id="password"
                                     type="password"
                                     value={password}
-                                    onChange={(e) => setPassword(e.target.value)}
+                                    onChange={(e) => { setPassword(e.target.value); setError(''); }}
                                     className="w-full pl-11 pr-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none transition-all"
                                     placeholder="••••••••"
                                     required
@@ -86,6 +88,9 @@ const Login = () => {
                                 Forgot password?
                             </Link>
                         </div>
+
+                        {/* Error Message */}
+                        {error && <p className="text-red-500 text-sm text-center">{error}</p>}
 
                         {/* Submit Button */}
                         <button

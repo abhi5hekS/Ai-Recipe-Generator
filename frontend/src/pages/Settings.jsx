@@ -4,7 +4,7 @@ import Navbar from '../components/Navbar';
 import { useAuth } from '../context/AuthContext';
 import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
-import { dummyUser, dummyPreferences } from '../data/dummyData';
+import api from '../services/api';
 
 const DIETARY_OPTIONS = ['Vegetarian', 'Vegan', 'Gluten-Free', 'Dairy-Free', 'Keto', 'Paleo'];
 const CUISINES = ['Any', 'Italian', 'Mexican', 'Indian', 'Chinese', 'Japanese', 'Thai', 'French', 'Mediterranean', 'American'];
@@ -13,6 +13,7 @@ const Settings = () => {
     const { user, logout } = useAuth();
     const navigate = useNavigate();
     const [saving, setSaving] = useState(false);
+    const [loading, setLoading] = useState(true);
 
     // Profile state
     const [profile, setProfile] = useState({
@@ -37,55 +38,105 @@ const Settings = () => {
     });
 
     useEffect(() => {
-        loadUserData();
+        fetchUserData();
     }, []);
 
-    const loadUserData = () => {
-        setProfile({
-            name: dummyUser.name,
-            email: dummyUser.email
-        });
+    const fetchUserData = async () => {
+        try{
+            const response = await api.getRequest('/users/profile');
+            const { user, preferences: userprefs } = response.data;
 
-        setPreferences({
-            dietary_restrictions: dummyPreferences.dietary_restrictions || [],
-            allergies: dummyPreferences.allergies || [],
-            preferred_cuisines: dummyPreferences.preferred_cuisines || [],
-            default_servings: dummyPreferences.default_servings || 4,
-            measurement_unit: dummyPreferences.measurement_unit || 'metric'
-        });
+            setProfile({
+                name: user.name,
+                email: user.email
+            });
+
+            if(userprefs){
+                setPreferences({
+                    dietary_restrictions: userprefs.dietary_restrictions || [],
+                    allergies: userprefs.allergies || [],
+                    preferred_cuisines: userprefs || [],
+                    default_servings: userprefs.default_servings || 4,
+                    measurement_unit: userprefs.measurement_unit || 'metric'
+                });
+            }
+        }
+        catch(err){
+            toast.error('Failed to load user data');
+        }
+        finally{
+            setLoading(false);
+        }
+    }
+
+    
+
+    const handleProfileUpdate = async (e) => {
+        e.preventDefault();
+        setSaving(true);
+
+        try{
+            await api.patchRequest('/users/profile', profile);
+            toast.success('Profile updated successfully');
+            const updatedUser = {...user, ...profile};
+            localStorage.setItem('user', JSON.stringify(updatedUser));
+        }
+        catch(err){
+            toast.error('Failed to update profile');
+        }
+        finally{
+            setSaving(false);
+        }
     };
 
-    const handleProfileUpdate = (e) => {
+    const handlePreferencesUpdate = async (e) => {
         e.preventDefault();
-        // UI-only update
-        toast.success('Profile updated successfully');
+        setSaving(true);
+
+        try{
+            await api.patchRequest('/users/preferences', preferences);
+            toast.success('Preferences updated successfully');
+        }
+        catch(err){
+            toast.error('Failed to update preferences');
+        }
+        finally{
+            setSaving(false);
+        }
     };
 
-    const handlePreferencesUpdate = (e) => {
-        e.preventDefault();
-        // UI-only update
-        toast.success('Preferences updated successfully');
-    };
-
-    const handlePasswordChange = (e) => {
+    const handlePasswordChange = async (e) => {
         e.preventDefault();
 
-        if (passwordData.newPassword !== passwordData.confirmPassword) {
-            toast.error('Passwords do not match');
+        if(passwordData.newPassword !== passwordData.confirmPassword){
+            toast.error('Password do not match');
             return;
         }
 
-        if (passwordData.newPassword.length < 6) {
+        if(passwordData.newPassword < 6){
             toast.error('Password must be at least 6 characters');
             return;
         }
 
-        // UI-only password change
-        toast.success('Password changed successfully');
-        setPasswordData({ currentPassword: '', newPassword: '', confirmPassword: '' });
+        setSaving(true);
+
+        try{
+            await api.patchRequest('/users/change-password',{
+                currentPassword: passwordData.currentPassword,
+                newPassword: passwordData.newPassword
+            });
+            toast.success('Password changed successfully');
+            setPasswordData({currentPassword: '', newPassword: '', confirmPassword: ''});
+        }
+        catch(err){
+            toast.error(err.response?.data?.message || 'Failed to change password');
+        }
+        finally{
+            setSaving(false);
+        }
     };
 
-    const handleDeleteAccount = () => {
+    const handleDeleteAccount = async () => {
         if (!confirm('Are you sure you want to delete your account? This action cannot be undone.')) {
             return;
         }
@@ -96,10 +147,15 @@ const Settings = () => {
             return;
         }
 
-        // UI-only delete
-        toast.success('Account deleted successfully');
-        logout();
-        navigate('/login');
+        try{
+            await api.deleteRequest('/users/account');
+            toast.success('Account deleted successfully');
+            logout();
+            navigate('/login');
+        }
+        catch(err){
+            toast.error('Failed to delete account');
+        }
     };
 
     const toggleDietary = (option) => {
@@ -147,7 +203,7 @@ const Settings = () => {
                                 <input
                                     type="text"
                                     value={profile.name}
-                                    // onChange={(e) => setProfile({ ...profile, name: e.target.value })}
+                                    onChange={(e) => setProfile({ ...profile, name: e.target.value })}
                                     className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none"
                                     required
                                 />

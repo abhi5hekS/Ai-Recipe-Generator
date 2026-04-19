@@ -7,9 +7,9 @@ const router = express.Router();
 router.use(authMiddleware);
 
 router.get('/profile', getProfile);
-router.put('/profile', updateProfile);
-router.put('/preferences', updatePreferences);
-router.put('/change-password', changePassword);
+router.patch('/profile', updateProfile);
+router.patch('/preferences', updatePreferences);
+router.patch('/change-password', changePassword);
 router.delete('/account', deleteAccount);
 
 module.exports = router;

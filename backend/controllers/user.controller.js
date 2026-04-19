@@ -2,68 +2,76 @@ const User = require('../models/user');
 const UserPreferences = require('../models/userPreferences');
 const bcrypt = require('bcryptjs');
 
-const getProfile = async(req, res, next)=>{
-    try{
+const getProfile = async (req, res, next) => {
+    try {
         const user = await User.findById(req.user.id);
-        const preferences = await UserPreferences.findById(req.user.id);
+        const preferences = await UserPreferences.findOne({ user: req.user.id });
 
         res.json({
             success: true,
-            data: {
-                user,
-                preferences
-            }
-        })
-    }
-    catch(error){
+            data: { user, preferences }
+        });
+    } catch (error) {
         next(error);
     }
-}
+};
 
-const updateProfile = async(req, res, next) =>{
-    try{
+const updateProfile = async (req, res, next) => {
+    try {
         const { name, email } = req.body;
 
-        const user = await User.updateOne(req.user.id, {name, email});
+        await User.updateOne(
+            { _id: req.user.id },
+            { $set: { name, email } }
+        );
 
         res.json({
             success: true,
-            message: 'Profile updated successfully',
-            data: {user}
+            message: 'Profile updated successfully'
         });
-    }
-    catch(error){
+    } catch (error) {
         next(error);
     }
-}
+};
 
-const updatePreferences = async(req, res, next) =>{
-    try{
-        const preferences = await UserPreferences.findOneAndUpdate(req.user.id,req.body,{upsert: true});
+const updatePreferences = async (req, res, next) => {
+    try {
+        const preferences = await UserPreferences.findOneAndUpdate(
+            { user_id: req.user.id },
+            {
+                $set: {
+                    ...req.body,
+                    user_id: req.user.id
+                }
+            },
+            { new: true, upsert: true }
+        );
+
         res.json({
             success: true,
             message: 'Preferences updated successfully',
-            data: {preferences}
+            data: preferences
         });
-    }
-    catch(error){
+
+    } catch (error) {
         next(error);
     }
-}
+};
 
-const changePassword = async(req, res, next)=>{
-    try{
-        const { currentPassword, newPassword} = req.body;
+const changePassword = async (req, res, next) => {
+    try {
+        const { currentPassword, newPassword } = req.body;
 
-        if(!currentPassword || !newPassword){
+        if (!currentPassword || !newPassword) {
             return res.status(400).json({
                 success: false,
-                message: 'Please provide current and new Password'
+                message: 'Please provide current and new password'
             });
         }
 
-        const user = await User.findOneById(req.user.id);
-        if(!user){
+        const user = await User.findById(req.user.id);
+
+        if (!user) {
             return res.status(404).json({
                 success: false,
                 message: 'User not found'
@@ -71,7 +79,8 @@ const changePassword = async(req, res, next)=>{
         }
 
         const isValid = await bcrypt.compare(currentPassword, user.password);
-        if(!isValid){
+
+        if (!isValid) {
             return res.status(401).json({
                 success: false,
                 message: 'Current password is incorrect'
@@ -88,11 +97,11 @@ const changePassword = async(req, res, next)=>{
             success: true,
             message: 'Password changed successfully'
         });
-    }
-    catch(error){
+
+    } catch (error) {
         next(error);
     }
-}
+};
 
 
 const deleteAccount = async(req, res, next) =>{
