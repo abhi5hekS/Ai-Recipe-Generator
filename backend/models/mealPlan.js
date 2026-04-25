@@ -11,6 +11,10 @@ const mealPlanSchema = new mongoose.Schema({
     ref: "Recipe",
     required: true
   },
+  meal_name:{
+    type: String,
+    required: true
+  },
   meal_date: {
     type: Date,
     required: true

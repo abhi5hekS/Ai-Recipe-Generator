@@ -34,7 +34,7 @@ const Dashboard = () => {
             });
 
             setRecentRecipes(recentRes.data.recipes || []);
-            setUpcomingMeals(upcomingRes.data.meals || [])
+            setUpcomingMeals(upcomingRes.data.meals || []);
         }
         catch(err){
             console.log("Error while fetching dashboard data", err);

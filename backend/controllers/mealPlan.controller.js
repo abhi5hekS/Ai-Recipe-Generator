@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 
 const addToMealPlan = async (req, res, next) => {
   try {
-    const { recipe_id, meal_date, meal_type } = req.body;
+    const {recipe_id, meal_date, meal_type } = req.body;
 
     const mealPlan = await MealPlan.findOneAndUpdate(
       {
@@ -80,8 +80,7 @@ const getUpcomingMeals = async (req, res, next) => {
     const limit = parseInt(req.query.limit) || 5;
 
     const meals = await MealPlan.find({
-      user_id: req.user.id,
-      meal_date: { $gte: new Date() }
+      user_id: req.user.id
     })
       .populate("recipe_id")
       .sort({ meal_date: 1 })
