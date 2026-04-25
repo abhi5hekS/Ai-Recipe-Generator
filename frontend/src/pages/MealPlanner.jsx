@@ -87,14 +87,13 @@ const MealPlanner = () => {
             <Navbar />
 
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-                {/* Header */}
+
                 <div className="flex items-center justify-between mb-6">
                     <div>
                         <h1 className="text-3xl font-bold text-gray-900">Meal Planner</h1>
                         <p className="text-gray-600 mt-1">Plan your weekly meals</p>
                     </div>
 
-                    {/* Week Navigation */}
                     <div className="flex items-center gap-3">
                         <button
                             onClick={() => setWeekStart(addDays(weekStart, -7))}
@@ -117,7 +116,6 @@ const MealPlanner = () => {
                     </div>
                 </div>
 
-                {/* Week Display */}
                 <div className="bg-white rounded-lg border border-gray-200 p-4 mb-6">
                     <div className="text-center">
                         <p className="text-sm text-gray-600">Week of</p>
@@ -127,9 +125,8 @@ const MealPlanner = () => {
                     </div>
                 </div>
 
-                {/* Calendar Grid */}
                 <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
-                    {/* Header Row */}
+
                     <div className="grid grid-cols-8 border-b border-gray-200 bg-gray-50">
                         <div className="p-4 font-semibold text-gray-700 border-r border-gray-200">
                             Meal
@@ -144,7 +141,6 @@ const MealPlanner = () => {
                         ))}
                     </div>
 
-                    {/* Meal Rows */}
                     {MEAL_TYPES.map(mealType => (
                         <div key={mealType} className="grid grid-cols-8 border-b border-gray-200 last:border-b-0">
                             <div className="p-4 font-medium text-gray-700 capitalize border-r border-gray-200 bg-gray-50">
@@ -189,7 +185,6 @@ const MealPlanner = () => {
                     ))}
                 </div>
 
-                {/* Stats */}
                 <div className="mt-6 grid grid-cols-1 md:grid-cols-3 gap-4">
                     <div className="bg-white rounded-lg border border-gray-200 p-4">
                         <p className="text-sm text-gray-600">Meals Planned</p>
@@ -210,7 +205,6 @@ const MealPlanner = () => {
                 </div>
             </div>
 
-            {/* Add Meal Modal */}
             {showAddModal && selectedSlot && (
                 <AddMealModal
                     date={selectedSlot.date}
@@ -221,7 +215,6 @@ const MealPlanner = () => {
                         setSelectedSlot(null);
                     }}
                     onSuccess={(newMeal) => {
-                        // Add to local state
                         const updatedPlan = { ...mealPlan };
                         const date = selectedSlot.date;
                         if (!updatedPlan[date]) {
@@ -289,7 +282,6 @@ const AddMealModal = ({ date, mealType, recipes, onClose, onSuccess }) => {
                 </div>
 
                 <form onSubmit={handleSubmit} className="space-y-4">
-                    {/* Search */}
                     <div>
                         <input
                             type="text"
@@ -300,7 +292,6 @@ const AddMealModal = ({ date, mealType, recipes, onClose, onSuccess }) => {
                         />
                     </div>
 
-                    {/* Recipe List */}
                     <div className="max-h-64 overflow-y-auto space-y-2 custom-scrollbar">
                         {filteredRecipes.length > 0 ? (
                             filteredRecipes.map(recipe => (

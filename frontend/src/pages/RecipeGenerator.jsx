@@ -25,7 +25,6 @@ const RecipeGenerator = () => {
     const [saving, setSaving] = useState(false);
     const [preferencesLoaded, setPreferencesLoaded] = useState(false);
 
-    // Load user preferences on component mount
     useEffect(() => {
         try{
             const fetchUserPreferences = async()=>{
@@ -146,12 +145,10 @@ const RecipeGenerator = () => {
                 </div>
 
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                    {/* Input Section */}
                     <div className="space-y-6">
                         <div className="bg-white rounded-xl border border-gray-200 p-6">
                             <h2 className="text-lg font-semibold text-gray-900 mb-4">Ingredients</h2>
 
-                            {/* Use Pantry Toggle */}
                             <div className="flex items-center gap-3 mb-4 p-3 bg-emerald-50 rounded-lg">
                                 <input
                                     type="checkbox"
@@ -165,7 +162,6 @@ const RecipeGenerator = () => {
                                 </label>
                             </div>
 
-                            {/* Manual Ingredient Input */}
                             <div className="flex gap-2 mb-4">
                                 <input
                                     type="text"
@@ -183,7 +179,6 @@ const RecipeGenerator = () => {
                                 </button>
                             </div>
 
-                            {/* Ingredient Tags */}
                             {ingredients.length > 0 && (
                                 <div className="flex flex-wrap gap-2">
                                     {ingredients.map((ingredient, index) => (
@@ -204,7 +199,6 @@ const RecipeGenerator = () => {
                             )}
                         </div>
 
-                        {/* Preferences */}
                         <div className="bg-white rounded-xl border border-gray-200 p-6 space-y-5">
                             <h2 className="text-lg font-semibold text-gray-900">Preferences</h2>
 
@@ -222,7 +216,6 @@ const RecipeGenerator = () => {
                                 </select>
                             </div>
 
-                            {/* Dietary Restrictions */}
                             <div>
                                 <label className="block text-sm font-medium text-gray-700 mb-2">Dietary Restrictions</label>
                                 <div className="flex flex-wrap gap-2">
@@ -241,7 +234,6 @@ const RecipeGenerator = () => {
                                 </div>
                             </div>
 
-                            {/* Servings */}
                             <div>
                                 <label className="block text-sm font-medium text-gray-700 mb-2">
                                     Servings: {servings}
@@ -260,7 +252,6 @@ const RecipeGenerator = () => {
                                 </div>
                             </div>
 
-                            {/* Cooking Time */}
                             <div>
                                 <label className="block text-sm font-medium text-gray-700 mb-2">Cooking Time</label>
                                 <div className="grid grid-cols-3 gap-2">
@@ -280,7 +271,6 @@ const RecipeGenerator = () => {
                             </div>
                         </div>
 
-                        {/* Generate Button */}
                         <button
                             onClick={handleGenerate}
                             disabled={generating}
@@ -300,11 +290,9 @@ const RecipeGenerator = () => {
                         </button>
                     </div>
 
-                    {/* Results Section */}
                     <div>
                         {generatedRecipe ? (
                             <div className="bg-white rounded-xl border border-gray-200 p-6 space-y-6">
-                                {/* Recipe Header */}
                                 <div>
                                     <h2 className="text-2xl font-bold text-gray-900 mb-2">{generatedRecipe.name}</h2>
                                     <p className="text-gray-600">{generatedRecipe.description}</p>
@@ -335,7 +323,6 @@ const RecipeGenerator = () => {
                                     </div>
                                 </div>
 
-                                {/* Ingredients */}
                                 <div>
                                     <h3 className="font-semibold text-gray-900 mb-3">Ingredients</h3>
                                     <ul className="space-y-2">
@@ -348,7 +335,6 @@ const RecipeGenerator = () => {
                                     </ul>
                                 </div>
 
-                                {/* Instructions */}
                                 <div>
                                     <h3 className="font-semibold text-gray-900 mb-3">Instructions</h3>
                                     <ol className="space-y-3">
@@ -363,7 +349,6 @@ const RecipeGenerator = () => {
                                     </ol>
                                 </div>
 
-                                {/* Nutrition */}
                                 {generatedRecipe.nutrition && (
                                     <div>
                                         <h3 className="font-semibold text-gray-900 mb-3">Nutrition (per serving)</h3>
@@ -377,7 +362,6 @@ const RecipeGenerator = () => {
                                     </div>
                                 )}
 
-                                {/* Cooking Tips */}
                                 {generatedRecipe.cookingTips && generatedRecipe.cookingTips.length > 0 && (
                                     <div className="bg-emerald-50 rounded-lg p-4">
                                         <h3 className="font-semibold text-emerald-900 mb-2">💡 Cooking Tips</h3>
@@ -389,7 +373,6 @@ const RecipeGenerator = () => {
                                     </div>
                                 )}
 
-                                {/* Actions */}
                                 <div className="flex gap-3 pt-4 border-t border-gray-200">
                                     <button
                                         onClick={handleSaveRecipe}

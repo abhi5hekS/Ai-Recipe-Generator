@@ -31,7 +31,6 @@ const SignUp = () => {
     return (
         <div className="min-h-screen bg-linear-to-br from-emerald-50 to-white flex items-center justify-center p-4">
             <div className="w-full max-w-md">
-                {/* Logo */}
                 <div className="text-center mb-8">
                     <div className="inline-flex items-center justify-center w-16 h-16 bg-emerald-500 rounded-2xl mb-4">
                         <ChefHat className="w-9 h-9 text-white" />
@@ -40,10 +39,8 @@ const SignUp = () => {
                     <p className="text-gray-600 mt-2">Start your culinary journey with AI Recipe Generator</p>
                 </div>
 
-                {/* Sign Up Form */}
                 <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-8">
                     <form onSubmit={handleSubmit} className="space-y-5">
-                        {/* Name */}
                         <div>
                             <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-2">
                                 Full Name
@@ -62,7 +59,6 @@ const SignUp = () => {
                             </div>
                         </div>
 
-                        {/* Email */}
                         <div>
                             <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
                                 Email
@@ -81,7 +77,6 @@ const SignUp = () => {
                             </div>
                         </div>
 
-                        {/* Password */}
                         <div>
                             <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-2">
                                 Password
@@ -102,7 +97,6 @@ const SignUp = () => {
                             <p className="text-xs text-gray-500 mt-1">Must be at least 6 characters</p>
                         </div>
 
-                        {/* Submit Button */}
                         <button
                             type="submit"
                             disabled={loading}
@@ -112,7 +106,6 @@ const SignUp = () => {
                         </button>
                     </form>
 
-                    {/* Login Link */}
                     <p className="text-center text-sm text-gray-600 mt-6">
                         Already have an account?{' '}
                         <Link to="/login" className="text-emerald-600 hover:text-emerald-700 font-medium">

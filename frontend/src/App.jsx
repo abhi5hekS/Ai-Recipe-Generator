@@ -3,7 +3,6 @@ import { Toaster } from 'react-hot-toast';
 import { AuthProvider } from './context/AuthContext';
 import ProtectedRoute from './components/ProtectedRoute';
 
-// Pages
 import Login from './pages/Login';
 import SignUp from './pages/SignUp';
 import Dashboard from './pages/Dashboard';
@@ -20,11 +19,9 @@ function App() {
     <AuthProvider>
       <Router>
         <Routes>
-          {/* Public Routes */}
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<SignUp />} />
 
-          {/* Protected Routes */}
           <Route
             path="/dashboard"
             element={
@@ -43,12 +40,10 @@ function App() {
           <Route path="/shopping-list" element={<ProtectedRoute><ShoppingList /></ProtectedRoute>} />
           <Route path="/settings" element={<ProtectedRoute><Settings /></ProtectedRoute>} />
 
-          {/* Default redirect */}
           <Route path="/" element={<Navigate to="/dashboard" replace />} />
         </Routes>
       </Router>
 
-      {/* Toast Notifications */}
       <Toaster
         position="top-right"
         toastOptions={{
@@ -77,7 +72,6 @@ function App() {
   );
 }
 
-// Temporary Coming Soon component
 const ComingSoon = ({ page }) => {
   return (
     <div className="min-h-screen bg-gray-50 flex items-center justify-center">

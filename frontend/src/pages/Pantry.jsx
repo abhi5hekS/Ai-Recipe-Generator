@@ -85,7 +85,7 @@ const Pantry = () => {
             <Navbar />
 
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-                {/* Header */}
+
                 <div className="flex items-center justify-between mb-6">
                     <div>
                         <h1 className="text-3xl font-bold text-gray-900">Pantry</h1>
@@ -100,7 +100,6 @@ const Pantry = () => {
                     </button>
                 </div>
 
-                {/* Expiring Soon Alert */}
                 {expiringItems.length > 0 && (
                     <div className="bg-amber-50 border border-amber-200 rounded-lg p-4 mb-6">
                         <div className="flex items-start gap-3">
@@ -115,10 +114,9 @@ const Pantry = () => {
                     </div>
                 )}
 
-                {/* Search and Filter */}
                 <div className="bg-white rounded-lg border border-gray-200 p-4 mb-6">
                     <div className="flex flex-col sm:flex-row gap-4">
-                        {/* Search */}
+
                         <div className="flex-1 relative">
                             <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
                             <input
@@ -130,7 +128,6 @@ const Pantry = () => {
                             />
                         </div>
 
-                        {/* Category Filter */}
                         <div className="flex gap-2 overflow-x-auto pb-2 sm:pb-0">
                             <CategoryButton
                                 label="All"
@@ -149,7 +146,6 @@ const Pantry = () => {
                     </div>
                 </div>
 
-                {/* Items Grid */}
                 {filteredItems.length > 0 ? (
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                         {filteredItems.map(item => (
@@ -168,7 +164,6 @@ const Pantry = () => {
                 )}
             </div>
 
-            {/* Add Item Modal */}
             {showAddModal && (
                 <AddItemModal
                     onClose={() => setShowAddModal(false)}

@@ -87,16 +87,15 @@ const MyRecipes = () => {
             <Navbar />
 
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-                {/* Header */}
+
                 <div className="mb-6">
                     <h1 className="text-3xl font-bold text-gray-900">My Recipes</h1>
                     <p className="text-gray-600 mt-1">Your collection of saved recipes</p>
                 </div>
 
-                {/* Search and Filters */}
                 <div className="bg-white rounded-lg border border-gray-200 p-4 mb-6">
                     <div className="flex flex-col lg:flex-row gap-4">
-                        {/* Search */}
+
                         <div className="flex-1 relative">
                             <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
                             <input
@@ -108,7 +107,6 @@ const MyRecipes = () => {
                             />
                         </div>
 
-                        {/* Cuisine Filter */}
                         <select
                             value={selectedCuisine}
                             onChange={(e) => setSelectedCuisine(e.target.value)}
@@ -121,7 +119,6 @@ const MyRecipes = () => {
                             ))}
                         </select>
 
-                        {/* Difficulty Filter */}
                         <select
                             value={selectedDifficulty}
                             onChange={(e) => setSelectedDifficulty(e.target.value)}
@@ -136,14 +133,12 @@ const MyRecipes = () => {
                     </div>
                 </div>
 
-                {/* Recipe Count */}
                 <div className="mb-4">
                     <p className="text-sm text-gray-600">
                         Showing {filteredRecipes.length} of {recipes.length} recipes
                     </p>
                 </div>
 
-                {/* Recipes Grid */}
                 {filteredRecipes.length > 0 ? (
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                         {filteredRecipes.map(recipe => (
@@ -180,12 +175,11 @@ const RecipeCard = ({ recipe, onDelete }) => {
 
     return (
         <div className="bg-white rounded-xl border border-gray-200 overflow-hidden hover:shadow-lg transition-all group">
-            {/* Recipe Image Placeholder */}
+
             <div className="h-48 bg-linear-to-br from-emerald-100 to-emerald-200 flex items-center justify-center">
                 <ChefHat className="w-16 h-16 text-emerald-600" />
             </div>
 
-            {/* Recipe Content */}
             <div className="p-5">
                 <Link to={`/recipes/${recipe._id}`} className="block mb-3">
                     <h3 className="font-semibold text-lg text-gray-900 group-hover:text-emerald-600 transition-colors line-clamp-2">
@@ -196,7 +190,6 @@ const RecipeCard = ({ recipe, onDelete }) => {
                     )}
                 </Link>
 
-                {/* Tags */}
                 <div className="flex flex-wrap gap-2 mb-4">
                     {recipe.cuisine_type && (
                         <span className="px-2 py-1 bg-emerald-100 text-emerald-700 rounded text-xs font-medium">
@@ -218,7 +211,6 @@ const RecipeCard = ({ recipe, onDelete }) => {
                     ))}
                 </div>
 
-                {/* Meta Info */}
                 <div className="flex items-center justify-between text-sm text-gray-600 mb-4">
                     <div className="flex items-center gap-1">
                         <Clock className="w-4 h-4" />
@@ -229,7 +221,6 @@ const RecipeCard = ({ recipe, onDelete }) => {
                     )}
                 </div>
 
-                {/* Actions */}
                 <div className="flex gap-2 pt-4 border-t border-gray-100">
                     <Link
                         to={`/recipes/${recipe._id}`}

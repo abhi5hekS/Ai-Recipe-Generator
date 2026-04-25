@@ -160,7 +160,6 @@ const ShoppingList = () => {
                     </p>
                 </div>
 
-                {/* Actions */}
                 {totalCount > 0 && (
                     <div className="flex flex-wrap gap-3 mb-6">
                         <button
@@ -198,7 +197,6 @@ const ShoppingList = () => {
                     </div>
                 )}
 
-                {/* Shopping List */}
                 {totalCount > 0 ? (
                     <div className="space-y-6">
                         {Object.entries(groupedItems).map(([category, categoryItems]) => (
@@ -234,7 +232,6 @@ const ShoppingList = () => {
                 )}
             </div>
 
-            {/* Add Item Modal */}
             {showAddModal && (
                 <AddItemModal
                     onClose={() => setShowAddModal(false)}

@@ -85,7 +85,6 @@ const RecipeDetail = () => {
             <Navbar />
 
             <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-                {/* Back Button */}
                 <Link
                     to="/recipes"
                     className="inline-flex items-center gap-2 text-gray-600 hover:text-gray-900 mb-6 transition-colors"
@@ -94,7 +93,6 @@ const RecipeDetail = () => {
                     Back to Recipes
                 </Link>
 
-                {/* Recipe Header */}
                 <div className="bg-white rounded-xl border border-gray-200 p-8 mb-6">
                     <div className="flex items-start justify-between mb-4">
                         <div className="flex-1">
@@ -111,7 +109,6 @@ const RecipeDetail = () => {
                         </button>
                     </div>
 
-                    {/* Tags */}
                     <div className="flex flex-wrap gap-2 mb-6">
                         {recipe.cuisine_type && (
                             <span className="px-3 py-1.5 bg-emerald-100 text-emerald-700 rounded-full text-sm font-medium">
@@ -133,7 +130,6 @@ const RecipeDetail = () => {
                         ))}
                     </div>
 
-                    {/* Meta Info */}
                     <div className="flex flex-wrap gap-6 text-gray-600">
                         <div className="flex items-center gap-2">
                             <Clock className="w-5 h-5" />
@@ -153,7 +149,7 @@ const RecipeDetail = () => {
                 </div>
 
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                    {/* Ingredients Section */}
+
                     <div className="lg:col-span-1">
                         <div className="bg-white rounded-xl border border-gray-200 p-6 sticky top-24">
                             <div className="flex items-center justify-between mb-4">
@@ -164,7 +160,6 @@ const RecipeDetail = () => {
                                 </div>
                             </div>
 
-                            {/* Servings Adjuster */}
                             <div className="mb-6">
                                 <div className="flex items-center gap-3">
                                     <button
@@ -193,7 +188,6 @@ const RecipeDetail = () => {
                                 </div>
                             </div>
 
-                            {/* Ingredients List */}
                             <div className="space-y-3">
                                 {recipe.ingredients && recipe.ingredients.map((ingredient, index) => {
                                     const adjustedQty = adjustQuantity(ingredient.quantity, originalServings);
@@ -220,7 +214,6 @@ const RecipeDetail = () => {
                         </div>
                     </div>
 
-                    {/* Instructions Section */}
                     <div className="lg:col-span-2 space-y-6">
                         <div className="bg-white rounded-xl border border-gray-200 p-6">
                             <h2 className="text-xl font-semibold text-gray-900 mb-4">Instructions</h2>
@@ -236,7 +229,6 @@ const RecipeDetail = () => {
                             </ol>
                         </div>
 
-                        {/* Nutrition Info */}
                         {recipe.nutrition && (
                             <div className="bg-white rounded-xl border border-gray-200 p-6">
                                 <h2 className="text-xl font-semibold text-gray-900 mb-4">Nutrition (per serving)</h2>
@@ -250,7 +242,6 @@ const RecipeDetail = () => {
                             </div>
                         )}
 
-                        {/* User Notes */}
                         {recipe.user_notes && (
                             <div className="bg-emerald-50 rounded-xl border border-emerald-200 p-6">
                                 <h3 className="font-semibold text-emerald-900 mb-2">📝 Notes</h3>

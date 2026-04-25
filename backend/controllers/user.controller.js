@@ -5,7 +5,7 @@ const bcrypt = require('bcryptjs');
 const getProfile = async (req, res, next) => {
     try {
         const user = await User.findById(req.user.id);
-        const preferences = await UserPreferences.findOne({ user: req.user.id });
+        const preferences = await UserPreferences.findOne({ user_id: req.user.id });
 
         res.json({
             success: true,

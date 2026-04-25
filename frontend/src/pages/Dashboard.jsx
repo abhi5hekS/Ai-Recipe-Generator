@@ -60,13 +60,11 @@ const Dashboard = () => {
             <Navbar />
 
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-                {/* Header */}
                 <div className="mb-8">
                     <h1 className="text-3xl font-bold text-gray-900">Dashboard</h1>
                     <p className="text-gray-600 mt-1">Welcome back! Here's your cooking overview</p>
                 </div>
 
-                {/* Stats Cards */}
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
                     <StatCard
                         icon={<ChefHat className="w-6 h-6" />}
@@ -88,7 +86,6 @@ const Dashboard = () => {
                     />
                 </div>
 
-                {/* Quick Actions */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
                     <Link
                         to="/generate"
@@ -121,7 +118,6 @@ const Dashboard = () => {
                     </Link>
                 </div>
 
-                {/* Recent Recipes & Upcoming Meals */}
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                     {/* Recent Recipes */}
                     <div className="bg-white rounded-xl border border-gray-200 p-6">
@@ -158,7 +154,6 @@ const Dashboard = () => {
                         )}
                     </div>
 
-                    {/* Upcoming Meals */}
                     <div className="bg-white rounded-xl border border-gray-200 p-6">
                         <div className="flex items-center justify-between mb-4">
                             <h2 className="text-lg font-semibold text-gray-900">Upcoming Meals</h2>

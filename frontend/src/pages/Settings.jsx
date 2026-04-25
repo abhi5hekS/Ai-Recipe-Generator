@@ -55,7 +55,7 @@ const Settings = () => {
                 setPreferences({
                     dietary_restrictions: userprefs.dietary_restrictions || [],
                     allergies: userprefs.allergies || [],
-                    preferred_cuisines: userprefs || [],
+                    preferred_cuisines: userprefs.preferred_cuisines || [],
                     default_servings: userprefs.default_servings || 4,
                     measurement_unit: userprefs.measurement_unit || 'metric'
                 });
